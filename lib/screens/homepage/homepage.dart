@@ -1,5 +1,7 @@
-import 'package:enhanced_http/enhanced_http.dart';
+import 'package:cryptowallet/screens/cryptodetail/cryptodetail.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/coinbaseservice.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -16,13 +18,13 @@ class _HomepageState extends State<Homepage> {
   final TextEditingController _tosend = TextEditingController();
   final TextEditingController _toreceive = TextEditingController();
 
-  EnhancedHttp currencies = EnhancedHttp(
-    baseURL: "https://api.swapzone.io/v1",
-    headers: {'x-api-key': 'dOrEBHNCU'},
-  );
-
   Future<void> apiCall() async {
-    final response = await currencies.get("/exchange/currencies");
+    final cb = CoinbaseService();
+    cb.initialize();
+    final response = await cb.getCurrencies();
+
+    print(await cb.getConversionRate("BTC", "USD"));
+
     if (mounted) {
       setState(() {
         result = response;
@@ -36,6 +38,11 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
+  void _redirectToDetails() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => const CryptoDetails())));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,9 +53,11 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: SizedBox(
@@ -57,22 +66,29 @@ class _HomepageState extends State<Homepage> {
                 key: _formkey,
                 child: Column(
                   children: [
-                    Row(
+                    Column(
                       children: [
-                        DropdownButton<String>(
-                          value: selectedCrypto,
-                          hint: const Text("Cryptocurrency"),
-                          items: result?.map<DropdownMenuItem<String>>(
-                                  (dynamic currency) {
-                                return DropdownMenuItem<String>(
-                                  value: currency['name'].toString(),
-                                  child: Text(currency['name'].toString()),
-                                );
-                              }).toList() ??
-                              [], // Perform null check and provide empty list
-                          onChanged: setCrypto,
+                        SizedBox(
+                          height: 20,
+                          child: DropdownButton<String>(
+                            value: selectedCrypto,
+                            hint: const Text(
+                              "Cryptocurrency",
+                              overflow: TextOverflow.fade,
+                            ),
+                            items: result?.map<DropdownMenuItem<String>>(
+                                    (dynamic currency) {
+                                  return DropdownMenuItem<String>(
+                                    value: currency['name'].toString(),
+                                    child: Text(currency['name'].toString()),
+                                  );
+                                }).toList() ??
+                                [], // Perform null check and provide empty list
+                            onChanged: setCrypto,
+                          ),
                         ),
-                        Expanded(
+                        SizedBox(
+                          height: 50,
                           child: TextFormField(
                             controller: _tosend,
                             decoration: const InputDecoration(
@@ -88,17 +104,23 @@ class _HomepageState extends State<Homepage> {
                         hintText: "Amount of Crypto user will receive",
                       ),
                     ),
+                    ElevatedButton(onPressed: () {}, child: const Text('Send'))
                   ],
                 ),
               ),
             ),
           ),
           Expanded(
+            flex: 3,
             child: ListView.builder(
               itemCount: result?.length ?? 0, // Perform null check
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
+                  onTap: _redirectToDetails,
                   leading: Text(result?[index]["name"].toString() ?? ""),
+                  title: Text(
+                    result?[index]["id"].toString() ?? "",
+                  ),
                 );
               },
             ),

@@ -12,7 +12,6 @@ class CoinbaseService {
   CoinbaseService({this.apiKey = '', this.apiSecret = ''});
 
   Future<void> initialize() async {
-    await dotenv.load(fileName: '.env');
     apiKey = dotenv.env['API_KEY'] ?? apiKey;
     apiSecret = dotenv.env['API_SECRET'] ?? apiSecret;
   }
@@ -92,7 +91,7 @@ class CoinbaseService {
       String fromCurrency, String toCurrency) async {
     String pair = '$fromCurrency-$toCurrency';
     int timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000);
-    String requestPath = '/api/v3/brokerage/products/$pair/ticker';
+    String requestPath = '/api/v3/brokerage/products/$pair/';
 
     String str = '$timestamp${'GET'.toUpperCase()}$requestPath';
     Digest digest =

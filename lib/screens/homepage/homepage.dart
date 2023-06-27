@@ -20,10 +20,8 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> apiCall() async {
     final cb = CoinbaseService();
-    cb.initialize();
+    await cb.initialize();
     final response = await cb.getCurrencies();
-
-    print(await cb.getConversionRate("BTC", "USD"));
 
     if (mounted) {
       setState(() {
@@ -38,9 +36,9 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
-  void _redirectToDetails() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => const CryptoDetails())));
+  void _redirectToDetails(String id) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => CryptoDetails(id))));
   }
 
   @override
@@ -69,7 +67,7 @@ class _HomepageState extends State<Homepage> {
                     Column(
                       children: [
                         SizedBox(
-                          height: 20,
+                          height: 30,
                           child: DropdownButton<String>(
                             value: selectedCrypto,
                             hint: const Text(
@@ -116,7 +114,8 @@ class _HomepageState extends State<Homepage> {
               itemCount: result?.length ?? 0, // Perform null check
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  onTap: _redirectToDetails,
+                  onTap: () =>
+                      _redirectToDetails(result?[index]["id"].toString() ?? ""),
                   leading: Text(result?[index]["name"].toString() ?? ""),
                   title: Text(
                     result?[index]["id"].toString() ?? "",

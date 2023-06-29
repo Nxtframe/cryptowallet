@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.blue, // Customize the background color
       body: Center(
         child: Text(
-          'My App',
+          'Crypto Wallet',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,

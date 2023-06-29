@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "58848976091",
+    "project_id": "crypto1390231732819",
+    "storage_bucket": "crypto1390231732819.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58848976091:android:63ad3fc4823c21dcd140fe",
+        "android_client_info": {
+          "package_name": "com.example.cryptowallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58848976091-kv866k72shu985hs0d9j66n50gsg41h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPp14qrv8fRMtJ2JBJmPxmhh5LZ4sSuOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58848976091-kv866k72shu985hs0d9j66n50gsg41h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

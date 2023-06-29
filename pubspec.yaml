@@ -41,6 +41,15 @@ dependencies:
   test: ^1.24.1
   http: ^0.13.6
   crypto: ^3.0.3
+  coinbase_wallet_sdk: ^1.0.6
+  firebase: ^9.0.3
+  firebase_core: ^2.14.0
+  firebase_auth: ^4.6.3
+  google_sign_in: ^6.1.4
+  web3dart: ^2.6.1
+  bip39: ^1.0.6
+  ed25519_hd_key: ^2.2.0
+  flutter_bitcoin: ^1.0.1
 
 dev_dependencies:
   flutter_test:

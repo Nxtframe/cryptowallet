@@ -1,40 +1,44 @@
-import 'package:cryptowallet/screens/splash/splashscreen.dart';
+import 'package:cryptowallet/provider/darkmodeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
-Future main() async {
+import 'screens/splash/splashscreen.dart';
+
+Future<void> main() async {
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider<DarkModeProvider>(
+      create: (_) => DarkModeProvider(),
+      child: Consumer<DarkModeProvider>(
+        builder: (context, darkModeProvider, _) {
+          return MaterialApp(
+            themeMode:
+                darkModeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              // Define your light mode theme data here
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            darkTheme: ThemeData(
+              // Define your dark mode theme data here
+              brightness: Brightness.dark,
+              // Customize other dark mode specific attributes
+            ),
+            home: const SplashScreen(),
+          );
+        },
       ),
-      home: const SplashScreen(),
     );
   }
 }
